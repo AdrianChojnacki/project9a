@@ -44,4 +44,49 @@ const changeSlide = () => {
   changeDot();
 };
 
-setInterval(changeSlide, time);
+// Start interval
+const startInterval = setInterval(changeSlide, time);
+
+// Key change function variables
+let keyInterval;
+let intervalFlag = false;
+
+// Key change function
+const keyChangeSlide = (e) => {
+  clearInterval(startInterval);
+
+  if (intervalFlag) {
+    clearInterval(keyInterval);
+  }
+
+  if (e.keyCode === 37) {
+    active--;
+
+    if (active === -1) {
+      active = slideList.length - 1;
+    }
+
+    image.src = slideList[active].img;
+    h1.textContent = slideList[active].text;
+
+    changeDot();
+  } else if (e.keyCode === 39) {
+    active++;
+
+    if (active === slideList.length) {
+      active = 0;
+    }
+
+    image.src = slideList[active].img;
+    h1.textContent = slideList[active].text;
+
+    changeDot();
+  }
+
+  keyInterval = setInterval(changeSlide, time);
+
+  intervalFlag = true;
+};
+
+// Key change listener
+window.addEventListener(`keydown`, keyChangeSlide);
