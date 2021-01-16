@@ -44,25 +44,18 @@ const changeSlide = () => {
   changeDot();
 };
 
-// Start interval
-const startInterval = setInterval(changeSlide, time);
-
-// Key change function variables
-let keyInterval;
-let intervalFlag = false;
+// Change interval
+let changeInterval = setInterval(changeSlide, time);
 
 // Key change function
 const keyChangeSlide = (e) => {
-  clearInterval(startInterval);
+  if (e.keyCode === 37 || e.keyCode === 39) {
+    clearInterval(changeInterval);
+    e.keyCode === 37 ? active-- : active++;
 
-  if (intervalFlag) {
-    clearInterval(keyInterval);
-  }
-
-  if (e.keyCode === 37) {
-    active--;
-
-    if (active === -1) {
+    if (active === slideList.length) {
+      active = 0;
+    } else if (active === -1) {
       active = slideList.length - 1;
     }
 
@@ -70,22 +63,9 @@ const keyChangeSlide = (e) => {
     h1.textContent = slideList[active].text;
 
     changeDot();
-  } else if (e.keyCode === 39) {
-    active++;
 
-    if (active === slideList.length) {
-      active = 0;
-    }
-
-    image.src = slideList[active].img;
-    h1.textContent = slideList[active].text;
-
-    changeDot();
+    changeInterval = setInterval(changeSlide, time);
   }
-
-  keyInterval = setInterval(changeSlide, time);
-
-  intervalFlag = true;
 };
 
 // Key change listener
